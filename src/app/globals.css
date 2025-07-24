@@ -12,6 +12,12 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --color-custom-yellow-100: #FEF3C7;
+  --color-custom-yellow-200: #EEE291;
+  --color-custom-yellow-300: #A07537;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
