@@ -84,14 +84,14 @@ export const SignUpView = () => {
                         <Input
                             id="password"
                             type="password"
-                            placeholder="Password"
+                            placeholder="**********"
                             {...register("password")}
                             error={errors.password?.message}
                         />
                         <Input
                             id="confirmPassword"
                             type="password"
-                            placeholder="Confirm Password"
+                            placeholder="**********"
                             {...register("confirmPassword")}
                             error={errors.confirmPassword?.message}
                         />
