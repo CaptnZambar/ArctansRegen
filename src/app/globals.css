@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
 }
 
 @theme inline {
@@ -16,6 +16,7 @@
   --color-custom-yellow-100: #FEF3C7;
   --color-custom-yellow-200: #EEE291;
   --color-custom-yellow-300: #A07537;
+  --color-custom-black: #121212;
 }
 
 @media (prefers-color-scheme: dark) {

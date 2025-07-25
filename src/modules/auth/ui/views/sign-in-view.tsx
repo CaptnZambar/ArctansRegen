@@ -10,32 +10,29 @@ import Link from "next/link";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 
-const formSchema = z
-    .object({
-        email: z.email({ message: "Invalid email address" }),
-        password: z.string().min(1, { message: "Password is required" }),
-    })
+const formSchema = z.object({
+    email: z.email({ message: "Invalid email address" }),
+    password: z.string().min(1, { message: "Password is required" }),
+});
 
 export const SignInView = () => {
     const router = useRouter();
     const [error, setError] = useState<string | null>(null);
-
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            email: "",
-            password: "",
-        },
-    });
+    const [isLoading, setIsLoading] = useState(false);
 
     const {
         handleSubmit,
         register,
-        formState: { errors, isSubmitting },
-    } = form;
+        formState: { errors },
+    } = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: { email: "", password: "" },
+    });
 
     const onSubmit = (data: z.infer<typeof formSchema>) => {
         setError(null);
+        setIsLoading(true);
+
         authClient.signIn.email(
             {
                 email: data.email,
@@ -43,10 +40,12 @@ export const SignInView = () => {
             },
             {
                 onSuccess: () => {
+                    setIsLoading(false);
                     router.push("/feed");
                 },
                 onError: ({ error }) => {
                     setError(error.message);
+                    setIsLoading(false);
                 },
             }
         );
@@ -56,7 +55,10 @@ export const SignInView = () => {
         <div className="min-h-screen flex items-center justify-center">
             <div className="w-full max-w-md text-center">
                 <h1 className="text-5xl font-bold mb-3">Sign In</h1>
-                <p className="text-gray-400 mb-3">Connect and share your knowledge with other members</p>
+                <p className="text-gray-400 mb-3">
+                    Connect and share your knowledge with other members
+                </p>
+
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex flex-col space-y-4 mb-3">
                         <Input
@@ -73,19 +75,23 @@ export const SignInView = () => {
                             {...register("password")}
                             error={errors.password?.message}
                         />
+
                         {error && (
                             <p className="text-center text-sm text-red-500">{error}</p>
                         )}
 
-                        <Button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? "Submitting..." : "Submit"}
+                        <Button type="submit" disabled={isLoading}>
+                            {isLoading ? "Loading…" : "Connect"}
                         </Button>
                     </div>
                 </form>
 
                 <div>
                     <p className="mb-3">
-                        Don't have an account? <Link href="/sign-up" className="text-custom-yellow-200">Sign Up</Link>
+                        Don’t have an account?{" "}
+                        <Link href="/sign-up" className="text-custom-yellow-200">
+                            Sign Up
+                        </Link>
                     </p>
                     <p className="text-custom-yellow-200">
                         <Link href="/">Home</Link>

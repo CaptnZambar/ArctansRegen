@@ -25,6 +25,7 @@ const formSchema = z
 export const SignUpView = () => {
     const router = useRouter();
     const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -39,22 +40,26 @@ export const SignUpView = () => {
     const {
         handleSubmit,
         register,
-        formState: { errors, isSubmitting },
+        formState: { errors },
     } = form;
 
     const onSubmit = (data: z.infer<typeof formSchema>) => {
         setError(null);
+        setIsLoading(true)
         authClient.signUp.email(
             {
                 name: data.name,
                 email: data.email,
                 password: data.password,
+                callbackURL: "/feed"
             },
             {
                 onSuccess: () => {
+                    setIsLoading(false);
                     router.push("/sign-in");
                 },
                 onError: ({ error }) => {
+                    setIsLoading(false);
                     setError(error.message);
                 },
             }
@@ -100,8 +105,8 @@ export const SignUpView = () => {
                             <p className="text-center text-sm text-red-500">{error}</p>
                         )}
 
-                        <Button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? "Submitting..." : "Submit"}
+                        <Button type="submit" disabled={isLoading}>
+                            {isLoading ? "Loading..." : "Connect"}
                         </Button>
                     </div>
                 </form>
