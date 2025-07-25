@@ -40,8 +40,8 @@ export const SignInView = () => {
             },
             {
                 onSuccess: () => {
-                    setIsLoading(false);
                     router.push("/feed");
+                    setIsLoading(false);
                 },
                 onError: ({ error }) => {
                     setError(error.message);

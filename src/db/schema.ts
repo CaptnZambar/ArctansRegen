@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, serial } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -45,3 +45,13 @@ export const verification = pgTable("verification", {
   createdAt: timestamp("created_at").$defaultFn(() => /* @__PURE__ */ new Date(),),
   updatedAt: timestamp("updated_at").$defaultFn(() => /* @__PURE__ */ new Date(),),
 });
+
+export const posts = pgTable("posts", {
+  id: serial("id").primaryKey(),
+  text: text("text").notNull(),
+  imageUrl: text("image_url")
+    .notNull()
+    .default("https://picsum.photos/300/200"),
+});
+
+export type Post = typeof posts.$inferSelect;

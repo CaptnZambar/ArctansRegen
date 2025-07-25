@@ -1,7 +1,7 @@
 "use client"
 
+import Posts from "@/components/Posts";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 
 export const FeedView = () => {
 
@@ -16,8 +16,9 @@ export const FeedView = () => {
     }
 
     return (
-        <div>
-            <p>Welcome {session.user.name}!</p>
-        </div>
+        <main className="min-h-screen text-white p-4 flex flex-col pb-20">
+        <h1 className="text-4xl font-bold">Les Trades</h1>
+        <Posts />
+        </main>
     )
 }
