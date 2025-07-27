@@ -48,10 +48,20 @@ export const verification = pgTable("verification", {
 
 export const posts = pgTable("posts", {
   id: serial("id").primaryKey(),
+  title: text("title").notNull(),
   text: text("text").notNull(),
-  imageUrl: text("image_url")
-    .notNull()
-    .default("https://picsum.photos/300/200"),
+  imageUrl: text("image_url").notNull().default("https://picsum.photos/300/200"),
+  authorId: text("author_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").$defaultFn(() => new Date()).notNull(),
 });
 export type Post = typeof posts.$inferSelect;
 
+export const cloudinaryFiles = pgTable("cloudinary_files", {
+  id: serial("id").primaryKey(),
+  publicId: text("public_id").notNull().unique(),
+  mediaUrl: text("media_url").notNull(),
+  resourceType: text("resource_type").notNull(),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  uploadTimestamp: timestamp("upload_timestamp").defaultNow().notNull(),
+});
+export type CloudinaryFile = typeof cloudinaryFiles.$inferSelect;

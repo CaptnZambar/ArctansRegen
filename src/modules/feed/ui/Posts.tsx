@@ -31,7 +31,6 @@ function Posts() {
   }, [page, areMorePosts]);
 
   useEffect(() => {
-    const container = document.querySelector('main') || window;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !loading && areMorePosts) {
@@ -53,26 +52,28 @@ function Posts() {
 
   return (
     <div className="mt-10 w-full max-w-lg flex flex-col gap-6">
-      {posts.map((post) => {
-        const imageSrc = post.imageUrl + `?random=${post.id}`;
-        return (
-          <div
-            key={post.id}
-            className="bg-white/10 rounded-lg overflow-hidden p-4"
-          >
-            <div className="flex justify-between items-center mb-2">
-              <p>{post.text}</p>
-              <p>{post.id}</p>
+      {posts.map((post) => (
+        <div key={post.id} className="bg-white/10 rounded-lg p-4">
+          <div className="flex justify-between items-baseline mb-2">
+            <div>
+              <h3 className="text-xl font-semibold">{post.title}</h3>
+              <p className="text-sm opacity-75">
+                by {post.authorId} •{" "}
+                {new Date(post.createdAt).toLocaleDateString()}
+              </p>
             </div>
-
-            <img
-              src={imageSrc}
-              alt="post"
-              className="w-full object-cover h-60 rounded-md"
-            />
+            <span className="text-zinc-500">#{post.id}</span>
           </div>
-        );
-      })}
+          <p className="mb-4">{post.text}</p>
+          {post.imageUrl && (
+            <img
+              src={`${post.imageUrl}?random=${post.id}`}
+              alt="post"
+              className="w-full h-60 object-cover rounded-md"
+            />
+          )}
+        </div>
+      ))}
 
       <div ref={loaderRef} className="h-1">{loading && <p className="text-center">Loading more posts...</p>}</div>
     </div>
