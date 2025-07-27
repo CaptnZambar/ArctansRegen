@@ -16,9 +16,9 @@ const Layout = ({ children }: Props) => {
   return (
     <div className="flex h-screen">
       <aside className="w-64 text-white flex flex-col justify-between">
-        <div className="p-6 mb-8">
+        <Link href="/" className="p-6 mb-8">
           <FullLogo />
-        </div>
+        </Link>
 
         <nav className="flex-1 px-4 space-y-2">
           <Link
@@ -34,7 +34,7 @@ const Layout = ({ children }: Props) => {
             Chat
           </Link>
           <Link
-            href="/trades"
+            href="/feed"
             className="block py-2 px-3 rounded hover:bg-custom-yellow-300 transition"
           >
             Trades

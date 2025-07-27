@@ -32,7 +32,6 @@ function Posts() {
 
   useEffect(() => {
     const container = document.querySelector('main') || window;
-    // IntersectionObserver watching loaderRef in viewport
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !loading && areMorePosts) {

@@ -1,6 +1,6 @@
 "use client"
 
-import Posts from "@/components/Posts";
+import Posts from "@/modules/feed/ui/Posts";
 import { authClient } from "@/lib/auth-client";
 
 export const FeedView = () => {
@@ -17,8 +17,8 @@ export const FeedView = () => {
 
     return (
         <main className="min-h-screen text-white p-4 flex flex-col pb-20">
-        <h1 className="text-4xl font-bold">Les Trades</h1>
-        <Posts />
+            <h1 className="text-4xl font-bold">Les Trades</h1>
+            <Posts />
         </main>
     )
 }

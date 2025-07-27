@@ -53,5 +53,5 @@ export const posts = pgTable("posts", {
     .notNull()
     .default("https://picsum.photos/300/200"),
 });
-
 export type Post = typeof posts.$inferSelect;
+

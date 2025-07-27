@@ -1,4 +1,4 @@
-import { WalletView } from "@/modules/wallet/ui/views/wallet-view";
+import { NewsView } from "@/modules/news/ui/views/news-view";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -14,7 +14,7 @@ const Page = async () => {
     }
 
     return (
-        <WalletView />
+        <NewsView />
     )
 }
 
