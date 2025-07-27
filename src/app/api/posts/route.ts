@@ -1,8 +1,7 @@
-// src/app/api/posts/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/db/index";
-import { posts } from "@/db/schema";
-import { desc } from "drizzle-orm";
+import { posts, user } from "@/db/schema";
+import { desc, eq } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 
 export async function GET(request: Request) {
@@ -11,7 +10,6 @@ export async function GET(request: Request) {
   const limit = Number(searchParams.get("limit") ?? 5);
   const offset = (page - 1) * limit;
 
-  // fetch posts with author name
   const result = await db
     .select({
       id: posts.id,
@@ -19,9 +17,10 @@ export async function GET(request: Request) {
       text: posts.text,
       imageUrl: posts.imageUrl,
       createdAt: posts.createdAt,
-      authorId: posts.authorId,
+      authorName: user.name,
     })
     .from(posts)
+    .leftJoin(user, eq(user.id, posts.authorId))
     .orderBy(desc(posts.createdAt))
     .limit(limit)
     .offset(offset);

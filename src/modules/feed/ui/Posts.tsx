@@ -1,10 +1,19 @@
 "use client";
 
-import { Post } from "@/db/schema";
+import { formatDate } from "@/lib/date";
 import { useEffect, useState, useRef } from "react";
 
+interface PostWithAuthor {
+  id: number;
+  title: string;
+  text: string;
+  imageUrl: string;
+  createdAt: string;
+  authorName: string;
+}
+
 function Posts() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostWithAuthor[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [areMorePosts, setAreMorePosts] = useState(true);
@@ -20,7 +29,9 @@ function Posts() {
       setAreMorePosts(false);
     }
 
-    setPosts((prev) => (page === 1 ? newPosts : [...prev, ...newPosts]));
+    setPosts((prev) =>
+      page === 1 ? newPosts : [...prev, ...newPosts]
+    );
     setLoading(false);
   };
 
@@ -37,16 +48,12 @@ function Posts() {
           setPage((prev) => prev + 1);
         }
       },
-      {
-        root: null,
-        rootMargin: '100px',
-      }
+      { root: null, rootMargin: "100px" }
     );
 
     if (loaderRef.current) {
       observer.observe(loaderRef.current);
     }
-
     return () => observer.disconnect();
   }, [loading, areMorePosts]);
 
@@ -56,10 +63,11 @@ function Posts() {
         <div key={post.id} className="bg-white/10 rounded-lg p-4">
           <div className="flex justify-between items-baseline mb-2">
             <div>
-              <h3 className="text-xl font-semibold">{post.title}</h3>
+              <h3 className="text-xl font-semibold">
+                {post.title}
+              </h3>
               <p className="text-sm opacity-75">
-                by {post.authorId} •{" "}
-                {new Date(post.createdAt).toLocaleDateString()}
+                by {post.authorName} • {formatDate(post.createdAt)}
               </p>
             </div>
             <span className="text-zinc-500">#{post.id}</span>
@@ -75,7 +83,11 @@ function Posts() {
         </div>
       ))}
 
-      <div ref={loaderRef} className="h-1">{loading && <p className="text-center">Loading more posts...</p>}</div>
+      <div ref={loaderRef} className="h-1">
+        {loading && (
+          <p className="text-center">Loading more posts…</p>
+        )}
+      </div>
     </div>
   );
 }
